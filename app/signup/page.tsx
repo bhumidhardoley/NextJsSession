@@ -1,4 +1,30 @@
+'use client'
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+
 const page = () => {
+  const router = useRouter()
+
+  const [username,setUsername] = useState('');
+    const [password,setPassword] = useState('');
+  
+  
+    async function handleSignUp(e: React.FormEvent<HTMLFormElement>){
+  
+      e.preventDefault()
+  
+      const response = await fetch('/api/signup',{
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username,password})
+      })
+  const data: {message: string} = await response.json();
+  alert(data.message)
+  
+    }
+
   return (
     <div
       style={{
@@ -19,16 +45,31 @@ const page = () => {
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
         }}
       >
-        <h1
-          style={{
-            textAlign: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          Sign Up
-        </h1>
+        <div
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '20px',
+  }}
+>
+  <img
+    src="/arrowleft.svg"
+    alt="Back"
+    style={{
+      width: '20px',
+      height: '20px',
+      cursor: 'pointer',
+    }}
+    onClick={() => router.back()}
+  />
 
-        <form>
+  <h1 style={{ margin: 0, flex: 1, textAlign: 'center' }}>
+    Sign In
+  </h1>
+</div>
+
+        <form onSubmit={handleSignUp}>
           <div style={{ marginBottom: '16px' }}>
             <label
               htmlFor="username"
@@ -46,6 +87,8 @@ const page = () => {
                 border: '1px solid #ccc',
                 outline: 'none',
               }}
+              value={username}
+              onChange={(e)=>setUsername(e.target.value)}
             />
           </div>
 
@@ -66,6 +109,8 @@ const page = () => {
                 border: '1px solid #ccc',
                 outline: 'none',
               }}
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
             />
           </div>
 
