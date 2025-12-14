@@ -20,7 +20,11 @@ const page = () => {
       body: JSON.stringify({username,password})
     })
 const data: {message: string} = await response.json();
-alert(data.message)
+ if (!response.ok) {
+    alert(data.message); // show error
+    return;
+  }
+router.replace('/homepage')
 
   }
 
